@@ -1,0 +1,5 @@
+RUNDIR=/var/run/opendkim
+SOCKET="inet:8891@localhost"
+USER=opendkim
+GROUP=opendkim
+PIDFILE=$RUNDIR/$NAME.pid

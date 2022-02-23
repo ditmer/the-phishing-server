@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  postfix:
+    image: mail
+    container_name: postfix
+    build:
+      context: .
+      dockerfile: ./docker/postfix.Dockerfile
+    ports: 
+      - "25:25"
+      - "587:587"
+      - "993:993"
+    restart: always
+    command: /etc/postfix/service.sh
+    volumes:
+      - ./config/postfix:/config/postfix
+      - ./config/dovecot:/config/dovecot
+      - ./config/dkim:/config/dkim
+      - ./certs:/certs
+      - ./user-mail:/user-mail
+    depends_on:
+      - db
+  db:
+    image: mysql:5.7
+    container_name: mysql_db
+    env_file: ./config/.global
+    restart: always
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "db" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10 
+    expose:
+      - 3306
+    volumes:
+      - ./db/mailserver-db:/var/lib/mysql
+  web:
+    image: web
+    container_name: rainloop
+    build:
+      context: .
+      args:
+        ini_domain: techxpressconsulting.com
+      dockerfile: ./docker/rainloop.Dockerfile
+    ports:
+      - "127.0.0.1:8443:443"
+    restart: always
+    volumes:
+      - ./certs:/certs
+    depends_on:
+      - postfix

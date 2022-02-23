@@ -1,0 +1,5 @@
+/^X-Mailer:/            IGNORE
+/^Received:/            IGNORE
+/^X-Original-IP:/       IGNORE
+/^User-Agent:/          IGNORE
+/^X-Mailer-Type:/       IGNORE

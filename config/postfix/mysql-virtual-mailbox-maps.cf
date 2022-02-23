@@ -1,0 +1,5 @@
+user = user
+password = notarealpass
+hosts = db
+dbname = mailserver
+query = SELECT 1 FROM virtual_users WHERE email='%s

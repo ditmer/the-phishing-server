@@ -1,0 +1,5 @@
+user = user
+password = notarealpass
+hosts = db
+dbname = mailserver
+query = SELECT destination FROM virtual_aliases WHERE source='%s'
